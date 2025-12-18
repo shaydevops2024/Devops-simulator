@@ -1,0 +1,8 @@
+{
+  "name": "incidentops-ui",
+  "private": true,
+  "scripts": {
+    "build": "mkdir -p dist && cp -r src/* dist/"
+  }
+}
+

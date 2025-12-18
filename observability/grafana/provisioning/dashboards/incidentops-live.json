@@ -1,0 +1,77 @@
+{
+  "uid": "incidentops-live",
+  "title": "IncidentOps Arena – Live Scenarios",
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "2s",
+  "tags": ["incidentops", "scenarios", "live"],
+  "style": "dark",
+
+  "templating": {
+    "list": [
+      {
+        "name": "scenario",
+        "type": "query",
+        "datasource": "Prometheus",
+        "query": {
+          "query": "label_values(incident_events_total, scenario)"
+        },
+        "refresh": 1,
+        "includeAll": true,
+        "multi": false,
+        "current": {
+          "text": "All",
+          "value": "All"
+        }
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Incident Events Rate",
+      "datasource": "Prometheus",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "sum by (scenario) (rate(incident_events_total{scenario=~\"$scenario\"}[30s]))",
+          "legendFormat": "{{scenario}}",
+          "refId": "A"
+        }
+      ]
+    },
+
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Scenario Step Progress",
+      "datasource": "Prometheus",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "max by (scenario) (incident_scenario_step{scenario=~\"$scenario\"})",
+          "legendFormat": "{{scenario}}",
+          "refId": "B"
+        }
+      ]
+    },
+
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Scenario Duration (seconds)",
+      "datasource": "Prometheus",
+      "gridPos": { "x": 0, "y": 8, "w": 24, "h": 8 },
+      "targets": [
+        {
+          "expr": "incident_scenario_duration_seconds{scenario=~\"$scenario\"}",
+          "legendFormat": "{{scenario}}",
+          "refId": "C"
+        }
+      ]
+    }
+  ]
+}

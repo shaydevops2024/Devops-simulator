@@ -1,0 +1,59 @@
+{
+  "uid": "ioa",
+  "title": "IncidentOps Arena",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "5s",
+  "templating": {
+    "list": [
+      {
+        "type": "custom",
+        "name": "scenario",
+        "label": "Scenario",
+        "query": "db_latency,crash_loop",
+        "current": { "text": "db_latency", "value": "db_latency" }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Active (1=running)",
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 5 },
+      "targets": [
+        { "expr": "incident_active{scenario=\"$scenario\"}", "refId": "A" }
+      ],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } }
+    },
+    {
+      "type": "stat",
+      "title": "Current Step",
+      "gridPos": { "x": 6, "y": 0, "w": 6, "h": 5 },
+      "targets": [
+        { "expr": "incident_step{scenario=\"$scenario\"}", "refId": "A" }
+      ],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } }
+    },
+    {
+      "type": "timeseries",
+      "title": "Runs Started (per 5m)",
+      "gridPos": { "x": 0, "y": 5, "w": 12, "h": 7 },
+      "targets": [
+        { "expr": "increase(incident_runs_total{scenario=\"$scenario\"}[5m])", "refId": "A" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Step Duration p95 (seconds)",
+      "gridPos": { "x": 0, "y": 12, "w": 12, "h": 7 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(incident_step_duration_seconds_bucket{scenario=\"$scenario\"}[5m])) by (le))",
+          "refId": "A"
+        }
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DevOps Simulator</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">DevOps Simulator</div>
+
+      <div class="actions">
+        <button id="openGrafana" class="btn btn-grafana">📊 Grafana</button>
+        <button id="openPrometheus" class="btn btn-prometheus">📈 Prometheus</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- LEFT: LOG STREAM -->
+      <section class="left">
+        <div class="card streamCard">
+          <div class="cardTitle">Logs Stream</div>
+          <div id="stream" class="stream"></div>
+        </div>
+      </section>
+
+      <!-- RIGHT: SCENARIOS -->
+      <section class="right">
+        <div class="card">
+          <div class="cardTitle">Scenarios</div>
+
+          <div class="scenarioGrid">
+            <button class="scenarioBtn" data-scenario="db_latency">🔥 DB Latency</button>
+            <button class="scenarioBtn" data-scenario="crash_loop">💥 Crash Loop</button>
+
+            <button class="scenarioBtn" data-scenario="memory_leak">🧠 Memory Leak</button>
+            <button class="scenarioBtn" data-scenario="cpu_spike">⚡ CPU Spike</button>
+
+            <button class="scenarioBtn" data-scenario="disk_full">💽 Disk Full</button>
+            <button class="scenarioBtn" data-scenario="network_loss">🌐 Network Loss</button>
+
+            <button class="scenarioBtn" data-scenario="bad_deploy">🚀 Bad Deployment</button>
+            <button class="scenarioBtn" data-scenario="secrets_expired">🔐 Secrets Expired</button>
+          </div>
+
+          <div class="smallNote">
+            Clicking a scenario will show details before execution.
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- CONFIRMATION MODAL -->
+  <div id="modalOverlay" class="modalOverlay hidden">
+    <div class="modal">
+      <div class="modalTitle" id="modalTitle"></div>
+
+      <div class="modalSection">
+        <strong>What happens</strong>
+        <p id="modalWhat"></p>
+      </div>
+
+      <div class="modalSection">
+        <strong>How it is repaired</strong>
+        <p id="modalFix"></p>
+      </div>
+
+      <div class="modalActions">
+        <button id="cancelModal" class="btn ghost">Cancel</button>
+        <button id="confirmModal" class="btn primary">Confirm & Run</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
